@@ -5,7 +5,7 @@ from comet_ml import Experiment
 
 # Initialize a Comet.ml experiment
 experiment = Experiment(
-    api_key="hYkOMH7BuPfd5637A5EYcNArl",  # Your provided Comet API key
+    api_key="key",  # Your provided Comet API key
     project_name="DangerLevelTraining",  # Your provided project name
     workspace="alphawake"  # Your provided workspace
 )
