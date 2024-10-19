@@ -1,0 +1,56 @@
+import comet_ml
+import pandas as pd
+from transformers import pipeline
+from comet_ml import Experiment
+
+# Initialize a Comet.ml experiment
+experiment = Experiment(
+    api_key="hYkOMH7BuPfd5637A5EYcNArl",  # Your provided Comet API key
+    project_name="DangerLevelTraining",  # Your provided project name
+    workspace="alphawake"  # Your provided workspace
+)
+
+# Load the CSV file
+csv_file_path = "C:/Users/brent/.vscode/hacktho/CORE_HackOhio_subset_cleaned_downsampled 1 (1).csv"
+data = pd.read_csv(csv_file_path)
+
+# Load a pre-trained Hugging Face toxicity classification pipeline
+classifier = pipeline("text-classification", model="unitary/toxic-bert")
+
+# Define a function to classify sentences and assign danger levels (1 to 5)
+def classify_danger(sentence):
+    predictions = classifier(sentence)
+    score = predictions[0]["score"]
+
+    # Map the score to a danger level (1-5)
+    if score >= 0.8:
+        danger_level = 5  # Extremely dangerous
+    elif score >= 0.6:
+        danger_level = 4  # Very dangerous
+    elif score >= 0.4:
+        danger_level = 3  # Moderately dangerous
+    elif score >= 0.2:
+        danger_level = 2  # Mildly dangerous
+    else:
+        danger_level = 1  # Not dangerous
+
+    return score, danger_level
+
+# Iterate over sentences in the 'PNT_ATRISKNOTES_TX' column
+for idx, row in data.iterrows():
+    sentence = row['PNT_ATRISKNOTES_TX']
+    
+    # Check if the sentence is not empty
+    if pd.notna(sentence):
+        score, danger_level = classify_danger(sentence)
+        
+        # Log sentence, danger level, and score to Comet.ml
+        experiment.log_text(sentence)
+        experiment.log_metric("toxicity_score", score)
+        experiment.log_metric("danger_level", danger_level)
+
+        print(f"Sentence: '{sentence}'")
+        print(f"Toxicity Score: {score}, Assigned Danger Level: {danger_level}\n")
+
+# End the Comet.ml experiment
+experiment.end()
