@@ -1,0 +1,61 @@
+import pandas as pd
+
+# List of High Energy Words
+high_energy_words = [
+    "attack", "assault", "hit", "punched", "fight", "struck", "injure", "fall", "height", "ladder", 
+    "roof", "elevated", "stairs", "falling", "crush", "machine", "equipment", "vehicle", "collision", 
+    "heavy", "strike", "electrical", "shock", "fire", "burn", "spark", "pressure", "explosion", 
+    "burst", "steam", "run", "rush", "push", "crash", "jump", "throw", "slam", "charge", "fast", 
+    "high speed", "rapid", "aggressive", "anger", "shouting", "screaming", "rage", "panic", 
+    "fearful", "terror", "alarm", "storm", "flood", "tornado", "earthquake", "machinery", "engine", 
+    "blast", "ignition", "uncontrolled", "spinning", "skidding", "slipping", "escalating", 
+    "boiling", "overflowing", "crane", "forklift", "bulldozer", "chainsaw", "knife", "blade", 
+    "cutting tool", "car", "truck", "conflict", "stampede", "mob", "severe", "intense", "violent", 
+    "dangerous", "critical", "extreme", "massive", "aggressive behavior", "unstable", "emergency", 
+    "hazardous", "erratic", "combustible", "flammable", "hazard", "unstable footing", "pressure build-up", 
+    "rupture", "collapse", "combustible gas", "hazardous waste", "chemical spill", "dangerous atmosphere", 
+    "violent protest", "riot", "elevated tension", "physical altercation", "disorienting", "high-risk", 
+    "volatile", "hyperactive", "combustible materials", "explosive reaction", "confrontation", 
+    "turbulent", "hot surface", "radioactive", "toxic fumes", "unstable conditions", "impending danger", 
+    "accelerated motion", "swinging load", "flash point", "emergency evacuation", "high voltage", 
+    "physical aggression", "hostile behavior", "sudden impact", "rapid descent", "uncontrolled fire", 
+    "chemical reaction", "violent shaking", "collision course", "combustible liquid", "erratic movement", 
+    "rapid spread", "high-pressure leak", "rapid growth", "sharp increase", "violent outburst", 
+    "threatening situation", "unstable environment", "loss of control", "spinning machinery", 
+    "fierce resistance", "immediate threat", "unstable platform", "violent reaction", "sudden burst", 
+    "chaotic environment", "dangerous levels", "runaway vehicle", "overexertion", "collapsing structure", 
+    "hyperventilation", "adrenaline surge", "heated argument", "uncontrollable force", "racing heartbeat", 
+    "unpredictable situation", "rapid acceleration", "dangerous confrontation", "unrestrained movement", 
+    "shockwave", "explosive power", "uncontrolled explosion", "fire hazard", "powerful impact", 
+    "elevated heart rate", "sharp turn", "loss of traction", "flashing lights", "blaring alarm", 
+    "reactive chemicals", "hazardous fumes", "unstable surface", "aggressive maneuver", "hazardous material", 
+    "fierce storm", "violent weather", "emergency response", "sudden collapse", "hostile confrontation", 
+    "rapid rotation", "chemical exposure", "flammable vapors", "swirling debris", "spinning out of control", 
+    "blinding light", "sirens blaring", "violent thrashing", "boiling liquid", "ruptured line", 
+    "dangerous equipment", "electrified surface", "sudden discharge", "hazardous situation", 
+    "intense pressure", "sudden release", "thrashing movement", "swift retaliation", "destructive force", 
+    "catastrophic failure", "drop"
+]
+
+# Load your CSV file
+# Replace 'your_file.csv' with the actual path to your CSV file
+df = pd.read_csv(r"C:\Users\brent\.vscode\hacktho\CORE_HackOhio_subset_cleaned_downsampled 1.csv")
+
+# Define the column to scan, replace 'COLUMN_NAME' with the actual column name
+column_to_scan = 'PNT_ATRISKNOTES_TX'
+
+# Function to check for high energy words in the text
+def contains_high_energy_words(text):
+    text = str(text).lower()  # Convert to lowercase for case-insensitive comparison
+    for word in high_energy_words:
+        if word in text:
+            return 1  # Return 1 if any keyword is found
+    return 0  # Return 0 if no keywords are found
+
+# Apply the function to the specified column and create a new 'high_energy_check' column
+df['high_energy_check'] = df[column_to_scan].apply(contains_high_energy_words)
+
+# Save the updated DataFrame to a new CSV file
+df.to_csv('scanned_file_with_high_energy_check.csv', index=False)
+
+print("Scan complete. Output saved to 'scanned_file_with_high_energy_check.csv'.")
