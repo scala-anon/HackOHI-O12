@@ -1,6 +1,9 @@
 import pandas as pd
 import re
 
+file_path = '~/Documents/AEPData/CORE_HackOhio_subset_cleaned_downsampled 1.csv'
+data = pd.read_csv(file_path)
+
 # Function to clean text by removing articles and common meaningless words
 def clean_text(text):
     if pd.isna(text):
@@ -22,7 +25,7 @@ for col in text_columns:
     data[col] = data[col].apply(clean_text)
 
 # Save the cleaned data to a new CSV file
-cleaned_file_path = '/mnt/data/cleaned_CORE_HackOhio_subset.csv'
+cleaned_file_path = '~/Documents/AEPData/CORE_HackOhio_subset_cleaned_downsampled 1.csv'
 data.to_csv(cleaned_file_path, index=False)
 
 cleaned_file_path
